@@ -1,12 +1,14 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { useRecoilState } from 'recoil';
-import { todosState, todoState } from './atom.js';
+import { todosState, todoState, activeIdState } from '../../recoil/atoms.js';
+import TodoItem from './TodoItem';
 
 function TodoList() {
   const [todos, setTodos] = useRecoilState(todosState);
   // const todos = useRecoilValue(todosState);
-  // const setTodos = useSetRecoilState(todosState);
   const [todo, setTodo] = useRecoilState(todoState);
+  const [activeId, setActiveId] = useRecoilState(activeIdState);
+
 
   const onTodoChange = (event) => {
     setTodo(event.target.value);
@@ -51,6 +53,16 @@ function TodoList() {
       return newTodos;
     });
   };
+  const onHandleSelectItem = (id) => {
+      setActiveId(id)
+    // setTodos(() => {
+    //   const newTodos = [...todos];
+    //   let [todo] = newTodos.filter((todo) => todo.id === id);
+    //   const index = newTodos.indexOf(todo);
+    //   newTodos.splice(index, 1);
+    //   return newTodos;
+    // });
+  };
 
   const renderInput = () => {
     return (
@@ -74,9 +86,10 @@ function TodoList() {
       );
     }
     return (
+      <div>
       <ul>
         {todos.map((todo) => (
-          <li>
+          <li key={todo.id}>
             <span
               className={todo.done === true ? 'todo done' : 'todo'}
               key={todo.id}
@@ -88,9 +101,16 @@ function TodoList() {
             <span className="todo" onClick={() => onHandleDelete(todo.id)}>
               x
             </span>
+            <span className="todo" onClick={() => onHandleSelectItem(todo.id)}>
+              view
+            </span>
           </li>
         ))}
       </ul>
+        <hr/>
+        <TodoItem />
+
+      </div>
     );
   };
 
