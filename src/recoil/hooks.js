@@ -1,7 +1,44 @@
+import React, { useEffect, useState } from 'react';
 import { useRecoilCallback, useRecoilState } from 'recoil';
-import { itemWithId } from './selectors';
-import { todoState,todosState } from './atoms';
-// import { createNewShape } from './defaults';
+import { itemStateFormatted, itemWithId } from './selectors';
+import { todoState, todosState, activeItemState, activeIdState } from './atoms';
+
+export const useItemState = () => {
+  const [state, setState] = useRecoilState(activeItemState);
+  const [stateFormatted] = useRecoilState(itemStateFormatted);
+  const [activeId] = useRecoilState(activeIdState);
+  const [todos] = useRecoilState(todosState);
+  let entities = {}
+
+  useEffect(() => {
+    if(activeId) setState(todos[activeId])
+  }, [activeId]);
+
+  useEffect(() => {
+    todos.forEach((todo) => {
+      entities[todo.id] = todo
+    })
+  }, [todos]);
+
+  const updateState = async (updatedItem) => {
+      console.log('update',updatedItem);
+      // todo: result = await fetch() UPDATE CRUD
+      setState({...state,...updatedItem})
+  };
+
+  return {
+    state,
+    setState,
+    stateFormatted,
+    activeId,
+    updateState,
+    entities
+  };
+};
+
+
+
+
 
 export function useUpdateItem() {
   const [todo,setTodo] = useRecoilState(todoState);
@@ -16,7 +53,6 @@ export function useUpdateItem() {
       })
       // setItem({...item,...formData})
     }
-
       // set(itemWithId(newValue.id), newValue)
   });
 }

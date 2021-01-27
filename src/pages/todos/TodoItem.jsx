@@ -1,47 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { DataForm } from '@bsmp/react';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { todoState } from '../../recoil/atoms';
-import { useUpdateItem } from '../../recoil/hooks';
-import { activeIdState, activeItemState, todosState } from '../../recoil/atoms';
-import { itemStateFormatted, charCountState, itemWithId } from '../../recoil/selectors';
+import { useItemState, useUpdateItem } from '../../recoil/hooks';
 
-export const TodoItem = ({ id }) => {
-  const todos = useRecoilValue(todosState);
-  const [activeId] = useRecoilState(activeIdState);
-  const [item, setItem] = useRecoilState(activeItemState);
-  const [itemFormatted] = useRecoilState(itemStateFormatted);
-  // const [item, setItem] = useRecoilState(itemWithId);
-  const updateItem = useUpdateItem(item)
+export const TodoItem = () => {
 
-  useEffect(() => {
-    if(activeId)
-      setItem(todos[activeId])
-      console.log('itemFormatted',itemFormatted);
-  }, [activeId]);
+  const {state, setState, stateFormatted, updateState, activeId,  entities} = useItemState()
 
   const renderItem = () => {
-    return Object.keys(itemFormatted).map((key,i) => (
-      <div>:: {itemFormatted[key]}</div>
+    return Object.keys(stateFormatted).map((key,i) => (
+      <div>:: {stateFormatted[key]}</div>
     ));
   };
 
-  if(!itemFormatted) return(<h4>select an item first</h4>)
+  if(!stateFormatted) return(<h4>select an item first</h4>)
 
   return (
     <div>
-      <h5 style={{ background: '#ccc', padding: '15px' }}>
-        {'item: '+JSON.stringify(item)}
-      </h5>
-      <h5 style={{ background: '#ccc', padding: '15px' }}>
-        {'itemFormatted: '+JSON.stringify(itemFormatted)}
-      </h5>
       {renderItem()}
-      <DataForm data={item} onFormSubmit={(formData) => {
-           setItem({...item,...formData})
-           todos[activeId] = {...todos[activeId],...item}
-      }} />
-
+      <hr/>
+      <DataForm data={state} onFormSubmit={(formData) => updateState(formData)} />
     </div>
   );
 };

@@ -7,7 +7,7 @@ export const itemStateFormatted= selector({
   get: ({ get }) => {
     const item = get(activeItemState);
     let itemFormatted = {}
-    if (!item) return itemFormatted;
+    if (!item) return null;
     Object.keys(item).forEach((k, i) => {
       itemFormatted[k] = item[k];
       if (k==='name') itemFormatted[k] = 'task = ' + item[k]
