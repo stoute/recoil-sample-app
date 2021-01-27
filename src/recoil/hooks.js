@@ -1,15 +1,25 @@
-import { useRecoilCallback } from 'recoil';
+import { useRecoilCallback, useRecoilState } from 'recoil';
 import { itemWithId } from './selectors';
+import { todoState,todosState } from './atoms';
 // import { createNewShape } from './defaults';
 
 export function useUpdateItem() {
+  const [todo,setTodo] = useRecoilState(todoState);
+  const [todos,setTodos] = useRecoilState(todosState);
   return useRecoilCallback(({set}) => async (newValue) => {
     console.log('useUpdateItem',newValue);
-    if( newValue && newValue.id) set(itemWithId(newValue.id), newValue)
+    if( newValue && newValue.id) {
+      todos.forEach((item, i) => {
+          if(item.id === newValue.id) {
+            setTodo({...todo, ...newValue})
+          }
+      })
+      // setItem({...item,...formData})
+    }
+
+      // set(itemWithId(newValue.id), newValue)
   });
 }
-
-
 
 //
 // export function useNewItem() {
