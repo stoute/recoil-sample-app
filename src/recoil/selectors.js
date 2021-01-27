@@ -13,14 +13,16 @@ export const charCountState = selector({
 export const itemWithId = selector(id => selector({
   key: `item${id}`,
   get: ({ get }) => {
+    console.log('selector: itemWithId',itemWithId);
     todosState.forEach((item) => {
       if (item.id === id)  return  item
     })
   },
-  // set: ({ set }, newValue) => {
-  //   const state = privateItemStateWithId(id);
-  //   set(state, newValue);
-  // }
+  set: ({ set }, newValue) => {
+    console.log('update',newValue);
+    // const state = privateItemStateWithId(id);
+    // set(state, newValue);
+  }
 }));
 
 // export const itemWithId = memoize(id => selector({

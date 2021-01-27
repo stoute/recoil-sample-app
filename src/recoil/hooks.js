@@ -1,12 +1,16 @@
-// import { useRecoilCallback } from 'recoil';
-// import { itemWithId } from './selectors';
+import { useRecoilCallback } from 'recoil';
+import { itemWithId } from './selectors';
 // import { createNewShape } from './defaults';
-//
-// export function useUpdateItem() {
-//   return useRecoilCallback(({set}) => async (newValue) => {
-//     set(itemWithId(newValue.id), newValue)
-//   });
-// }
+
+export function useUpdateItem() {
+  return useRecoilCallback(({set}) => async (newValue) => {
+    console.log('useUpdateItem',newValue);
+    if( newValue && newValue.id) set(itemWithId(newValue.id), newValue)
+  });
+}
+
+
+
 //
 // export function useNewItem() {
 //   return useRecoilCallback(({snapshot: {getPromise}}) => async (shapeParam) => {

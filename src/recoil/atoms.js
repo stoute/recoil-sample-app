@@ -25,6 +25,12 @@ export const activeIdState = atom({
   default: '',
 });
 
+export const activeItemState = atom({
+  key: 'activeItemState',
+  default: null,
+});
+
+
 export const textState = atom({
   key: 'textState', // unique ID (with respect to other atoms/selectors)
   default: '', // default value (aka initial value)
