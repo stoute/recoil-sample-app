@@ -1,6 +1,16 @@
 import { atom } from 'recoil';
 import memoize from '../utils/memoize';
 
+export const activeIdState = atom({
+  key: 'activeIdState',
+  default: null,
+});
+
+export const activeItemState = atom({
+  key: 'activeItemState',
+  default: null,
+});
+
 export const todosState = atom({
   key: 'todosState',
   default: [
@@ -18,16 +28,6 @@ export const todosState = atom({
 export const todoState = atom({
   key: 'todoState',
   default: '',
-});
-
-export const activeIdState = atom({
-  key: 'activeIdState',
-  default: '',
-});
-
-export const activeItemState = atom({
-  key: 'activeItemState',
-  default: null,
 });
 
 

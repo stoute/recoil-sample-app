@@ -1,6 +1,31 @@
 import memoize from '../utils/memoize';
 import { selector } from 'recoil';
 import { textState, todosState, activeItemState } from './atoms';
+import {todoFormatter} from '../utils/todoFormatter';
+
+// export const entitiesState = selector(id => selector({
+//   key: `enttity${id}`,
+//   get: ({ get }) => {
+//     let entities = {}
+//     get(todosState).forEach((todo) => {
+//       entities[todo.id] = todo
+//     })
+//     if(id) return entities[id]
+//     return entities;
+//   }
+// }));
+
+export const entitiesState= selector({
+  key: 'entitiesState', // unique ID (with respect to other atoms/selectors)
+  get: ({ get }) => {
+    let entities = {}
+    get(todosState).forEach((todo) => {
+      entities[todo.id] = todo
+    })
+    // if(id) return entities[id]
+    return entities;
+  },
+});
 
 export const itemStateFormatted= selector({
   key: 'itemFormatted', // unique ID (with respect to other atoms/selectors)
@@ -9,9 +34,7 @@ export const itemStateFormatted= selector({
     let itemFormatted = {}
     if (!item) return null;
     Object.keys(item).forEach((k, i) => {
-      itemFormatted[k] = item[k];
-      if (k==='name') itemFormatted[k] = 'task = ' + item[k]
-      if (k==='done') itemFormatted[k] = 'task done = ' + item[k]
+      itemFormatted[k] = todoFormatter(k,item)
     });
     return itemFormatted;
   },

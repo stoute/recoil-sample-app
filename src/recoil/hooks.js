@@ -1,29 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { useRecoilCallback, useRecoilState } from 'recoil';
-import { itemStateFormatted, itemWithId } from './selectors';
+import { entitiesState, itemStateFormatted, itemWithId } from './selectors';
 import { todoState, todosState, activeItemState, activeIdState } from './atoms';
 
 export const useItemState = () => {
   const [state, setState] = useRecoilState(activeItemState);
   const [stateFormatted] = useRecoilState(itemStateFormatted);
   const [activeId] = useRecoilState(activeIdState);
-  const [todos] = useRecoilState(todosState);
-  let entities = {}
+  const [entities] = useRecoilState(entitiesState);
+  const [todos, setTodos] = useRecoilState(todosState);
 
   useEffect(() => {
-    if(activeId) setState(todos[activeId])
+    if(activeId) setState(entities[activeId])
   }, [activeId]);
 
-  useEffect(() => {
-    todos.forEach((todo) => {
-      entities[todo.id] = todo
-    })
-  }, [todos]);
-
   const updateState = async (updatedItem) => {
-      console.log('update',updatedItem);
-      // todo: result = await fetch() UPDATE CRUD
-      setState({...state,...updatedItem})
+
+      // todo: result = await api update
+      setTimeout(() => {
+        let array = []
+        todos.forEach((todo,i) => {
+          array.push(todo)
+          if(todo.id == updatedItem.id) array[i] = updatedItem
+        })
+        setTodos(array)
+        setState({...state ,...updatedItem})
+
+      },100)
+
   };
 
   return {
@@ -39,23 +43,23 @@ export const useItemState = () => {
 
 
 
-
-export function useUpdateItem() {
-  const [todo,setTodo] = useRecoilState(todoState);
-  const [todos,setTodos] = useRecoilState(todosState);
-  return useRecoilCallback(({set}) => async (newValue) => {
-    console.log('useUpdateItem',newValue);
-    if( newValue && newValue.id) {
-      todos.forEach((item, i) => {
-          if(item.id === newValue.id) {
-            setTodo({...todo, ...newValue})
-          }
-      })
-      // setItem({...item,...formData})
-    }
-      // set(itemWithId(newValue.id), newValue)
-  });
-}
+//
+// export function useUpdateItem() {
+//   const [todo,setTodo] = useRecoilState(todoState);
+//   const [todos,setTodos] = useRecoilState(todosState);
+//   return useRecoilCallback(({set}) => async (newValue) => {
+//     console.log('useUpdateItem',newValue);
+//     if( newValue && newValue.id) {
+//       todos.forEach((item, i) => {
+//           if(item.id === newValue.id) {
+//             setTodo({...todo, ...newValue})
+//           }
+//       })
+//       // setItem({...item,...formData})
+//     }
+//       // set(itemWithId(newValue.id), newValue)
+//   });
+// }
 
 //
 // export function useNewItem() {

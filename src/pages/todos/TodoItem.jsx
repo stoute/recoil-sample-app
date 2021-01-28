@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { DataForm } from '@bsmp/react';
-import { useItemState, useUpdateItem } from '../../recoil/hooks';
+import { useItemState } from '../../recoil/hooks';
 
 export const TodoItem = () => {
-
   const {state, setState, stateFormatted, updateState, activeId,  entities} = useItemState()
 
   const renderItem = () => {
     return Object.keys(stateFormatted).map((key,i) => (
-      <div>:: {stateFormatted[key]}</div>
+      <div>{key} :: {stateFormatted[key]}</div>
     ));
   };
 
@@ -18,7 +17,7 @@ export const TodoItem = () => {
     <div>
       {renderItem()}
       <hr/>
-      <DataForm data={state} onFormSubmit={(formData) => updateState(formData)} />
+      <DataForm data={state} onFormSubmit={(formData) => updateState(formData)} language={'nl-NL'} />
     </div>
   );
 };

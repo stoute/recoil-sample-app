@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import TodoList from './TodoList';
 import CharacterCounter from '../../components/characterCounter';
 import { RecoilRoot, useRecoilState } from 'recoil';
-import { activeItemState } from '../../recoil/atoms';
+import { activeItemState, todosState } from '../../recoil/atoms';
 
 const TodosPage = (props) => {
   const [state, setState] = useState({});
